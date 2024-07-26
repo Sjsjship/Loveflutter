@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Slider</title>
+    <style>
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1) rotate(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1) rotate(5deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(0) scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+            transition: background 0.5s;
+            background: linear-gradient(to bottom, #ff7f7f, #ffb3b3); /* Light pink gradient background */
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fff; /* White text color for better contrast */
+            position: relative;
+            z-index: 10;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .heart {
+            width: 30px;
+            height: 30px;
+            background: url('file:///C:/Users/Shivangi%20Jain/Documents/SJSJSHIP/heart.png') no-repeat center center;
+            background-size: contain;
+            animation: float 5s ease-in-out infinite;
+            position: absolute;
+            opacity: 0.7;
+            pointer-events: none; /* Ensure hearts don’t block interactions */
+            z-index: 5;
+        }
+
+        .butterfly {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 5;
+            animation: float 10s ease-in-out infinite;
+            pointer-events: none; /* Ensure butterflies don’t block interactions */
+        }
+
+        #sliderContainer {
+            margin: 20px 0;
+            z-index: 10;
+        }
+
+        input[type="range"] {
+            width: 300px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 10px;
+            background: #ffcccc;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #ff4d4d;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        input[type="range"]:active::-webkit-slider-thumb {
+            background: #ff1a1a;
+        }
+
+        #videoContainer {
+            display: none;
+            margin-top: 20px;
+            z-index: 10;
+        }
+
+        .butterflyContainer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none; /* Allow interaction with elements beneath */
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <h1>How much do you love me?</h1>
+    <!-- Adding more heart elements -->
+    <div id="heartContainer"></div>
+    <div id="sliderContainer">
+        <input type="range" min="0" max="100" value="0" id="loveSlider">
+    </div>
+    <div id="videoContainer">
+        <video width="320" height="240" controls>
+            <source src="file:///C:/Users/Shivangi%20Jain/Documents/SJSJSHIP/SJSJSHIP.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div id="butterflyContainer" class="butterflyContainer"></div> <!-- Container for dynamically added butterflies -->
+
+    <script>
+        const loveSlider = document.getElementById('loveSlider');
+        const videoContainer = document.getElementById('videoContainer');
+        const body = document.body;
+        const butterflyContainer = document.getElementById('butterflyContainer');
+        const heartContainer = document.getElementById('heartContainer');
+        const audio = new Audio('https://www.soundjay.com/button/beep-07.wav'); // Ensure this URL is correct
+
+        loveSlider.addEventListener('input', function() {
+            const value = this.value;
+            if (value == 100) {
+                videoContainer.style.display = 'block';
+                playSound();
+            } else {
+                videoContainer.style.display = 'none';
+            }
+            
+            // Update background gradient based on slider value
+            body.style.background = `linear-gradient(to bottom, #ff7f7f, #ffb3b3 ${value}%)`;
+            
+            // Create butterflies based on slider value
+            const numButterflies = Math.floor(value / 5); // Adjust number of butterflies
+            createButterflies(numButterflies);
+        });
+
+        function playSound() {
+            audio.play().catch(error => {
+                console.error('Error playing sound:', error);
+            });
+        }
+
+        function createButterflies(num) {
+            butterflyContainer.innerHTML = ''; // Clear existing butterflies
+
+            for (let i = 0; i < num; i++) {
+                const butterfly = document.createElement('div');
+                butterfly.className = 'butterfly';
+                butterfly.style.backgroundImage = 'url("file:///C:/Users/Shivangi%20Jain/Documents/SJSJSHIP/butterfly.png")'; // Local butterfly image
+                butterfly.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+                butterfly.style.top = `${Math.random() * 100}vh`; // Random vertical position
+                butterfly.style.animationDuration = `${Math.random() * 10 + 5}s`; // Random animation duration
+                butterflyContainer.appendChild(butterfly);
+            }
+        }
+
+        function createHearts(num) {
+            heartContainer.innerHTML = ''; // Clear existing hearts
+
+            for (let i = 0; i < num; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = `${Math.random() * (window.innerWidth - 30)}px`; // Random horizontal position
+                heart.style.top = `${Math.random() * (window.innerHeight - 30)}px`; // Random vertical position
+                heart.style.animationDuration = `${Math.random() * 5 + 5}s`; // Random animation duration
+                heartContainer.appendChild(heart);
+            }
+        }
+
+        function disperseHearts() {
+            const value = loveSlider.value;
+            const numHearts = Math.floor(value / 2) + 10; // More hearts based on slider value
+            createHearts(numHearts);
+        }
+
+        // Initial dispersion of hearts
+        disperseHearts();
+        
+        // Update heart positions on slider change
+        loveSlider.addEventListener('input', disperseHearts);
+        
+        // Optional: Update heart positions on window resize
+        window.addEventListener('resize', disperseHearts);
+    </script>
+</body>
+</html>
