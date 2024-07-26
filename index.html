@@ -49,7 +49,7 @@
         .heart {
             width: 30px;
             height: 30px;
-            background: url('images/heart.png') no-repeat center center;
+            background: url('heart.png') no-repeat center center;
             background-size: contain;
             animation: float 5s ease-in-out infinite;
             position: absolute;
@@ -126,7 +126,7 @@
     </div>
     <div id="videoContainer">
         <video width="320" height="240" controls>
-            <source src="videos/SJSJSHIP.mp4" type="video/mp4">
+            <source src="SJSJSHIP.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
@@ -169,7 +169,7 @@
             for (let i = 0; i < num; i++) {
                 const butterfly = document.createElement('div');
                 butterfly.className = 'butterfly';
-                butterfly.style.backgroundImage = 'url("images/butterfly.png")'; // Updated to use relative path
+                butterfly.style.backgroundImage = 'url("butterfly.png")'; // Local butterfly image
                 butterfly.style.left = `${Math.random() * 100}vw`; // Random horizontal position
                 butterfly.style.top = `${Math.random() * 100}vh`; // Random vertical position
                 butterfly.style.animationDuration = `${Math.random() * 10 + 5}s`; // Random animation duration
